@@ -1,0 +1,19 @@
+{
+  "name": "node-farm",
+  "version": "1.0.0",
+  "description": "Learning nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfpa11100/NodeFarm.git"
+  },
+  "author": "Juan Felipe Palacio Agudelo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jfpa11100/NodeFarm/issues"
+  },
+  "homepage": "https://github.com/jfpa11100/NodeFarm#readme"
+}
