@@ -1,10 +1,28 @@
 const fs = require('fs');
 
-dataTours = fs.readFileSync(
-  `${__dirname}/../dev-data/data/tours-simple.json`,
-  'utf-8'
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );
-const tours = JSON.parse(dataTours);
+
+exports.checkId = (req, res, next, val) => {
+  if (+req.params.id > tours.length) {
+    return res.status(404).json({
+      status: 'failed',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+};
+
+exports.checkTourBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'Missing name or price',
+    });
+  }
+  next();
+};
 
 exports.getAllTours = (req, res) => {
   res.json({
@@ -17,12 +35,6 @@ exports.getAllTours = (req, res) => {
 exports.getTourById = (req, res) => {
   const id = +req.params.id;
   const tour = tours.find((el) => el.id === id);
-  if (!tour) {
-    res.status(404).json({
-      status: 'failed',
-      message: 'Tour not found',
-    });
-  }
   res.status(200).json({
     status: 'success',
     data: { tour },
@@ -37,13 +49,19 @@ exports.createTour = (req, res) => {
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
+      if (err) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Failed to write file',
+        });
+      }
       res.status(201).json({
         status: 'success',
         data: {
           tour: newTour,
         },
       });
-    }
+    },
   );
 };
 
